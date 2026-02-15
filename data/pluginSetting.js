@@ -354,7 +354,7 @@ export const defaultSettings = await switchLanguage('__defaultSettings__', {
             initNode: '本轮需要记录当前时间、地点、人物信息，使用insertRow函数', updateNode: "当描写的场景，时间，人物变更时", deleteNode: "此表大于一行时应删除多余行",
         },
         {
-            tableName: '角色特征表格', tableIndex: 1, columns: ['角色名', '身体特征', '性格', '职业', '爱好', '喜欢的事物（作品、虚拟人物、物品等）', '住所', '其他重要信息'], enable: true, Required: true, asStatus: true, toChat: true, note: '角色天生或不易改变的特征csv表格，思考本轮有否有其中的角色，他应作出什么反应',
+            tableName: '角色特征表格', tableIndex: 1, columns: ['角色名', '身体特征', '性格', '职业', '爱好', '喜欢的事物（作品、虚拟人物、物品等）', '住所', '其他重要信息'], enable: true, Required: true, asStatus: true, toChat: true, note: '角色天生或不易改变的特征csv表格，思考本轮有否有其它的角色，他应作出什么反应',
             initNode: '本轮必须从上文寻找已知的所有角色使用insertRow插入，角色名不能为空', insertNode: '当本轮出现表中没有的新角色时，应插入', updateNode: "当角色的身体出现持久性变化时，例如伤痕/当角色有新的爱好，职业，喜欢的事物时/当角色更换住所时/当角色提到重要信息时", deleteNode: "",
         },
         {
@@ -370,8 +370,8 @@ export const defaultSettings = await switchLanguage('__defaultSettings__', {
             initNode: '本轮必须从上文寻找可以插入的事件并使用insertRow插入', insertNode: '当某个角色经历让自己印象深刻的事件时，比如表白、分手等', updateNode: "", deleteNode: "",
         },
         {
-            tableName: '重要物品表格', tableIndex: 5, columns: ['拥有人', '物品描述', '物品名', '重要原因'], enable: true, Required: false, asStatus: true, toChat: true, note: '对某人很贵重或有特殊纪念意义的物品',
-            insertNode: '当某人获得了贵重或有特殊意义的物品时/当某个已有物品有了特殊意义时', updateNode: "", deleteNode: "",
+            tableName: '重要物品表格', tableIndex: 5, columns: ['拥有人', '物品描述', '物品名', '数量', '重要原因'], enable: true, Required: false, asStatus: true, toChat: true, note: '角色现在拥有的物品',
+            insertNode: '角色现在新增加的物品', updateNode: "角色拥有的物品拥有者发生改变，数量、性质特征发生改变", deleteNode: "角色拥有的物品被使用完、数量为0、完全损坏掉、丢弃掉",
         },
     ],
 });
