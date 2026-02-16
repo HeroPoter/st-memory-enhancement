@@ -165,7 +165,7 @@ export const defaultSettings = await switchLanguage('__defaultSettings__', {
   {{tableData}}
 
   # 增删改dataTable操作方法：
-  -当你生成正文后，需要根据【增删改触发条件】对每个表格是否需要增删改进行检视。如需修改，请在<tableEdit>标签中使用 JavaScript 函数的写法调用函数，并使用下面的 OperateRule 进行。
+  -当你生成正文后，需要根据【增删改触发条件】对每个表格是否需要增删改进行检视，增为插入操作(使用insertRow函数插入)、删为删除操作(使用deleteRow函数删除)、改为更新操作(使用updateRow函数更新)。如需修改，请在<tableEdit>标签中使用 JavaScript 函数的写法调用函数，并使用下面的 OperateRule 进行。
 
   ## 操作规则 (必须严格遵守)
   <OperateRule>
@@ -179,7 +179,8 @@ export const defaultSettings = await switchLanguage('__defaultSettings__', {
   updateRow(tableIndex:number, rowIndex:number, data:{[colIndex:number]:string|number})
   例如：updateRow(0, 0, {3: "惠惠"})
   </OperateRule>
-
+  增为插入操作(使用insertRow函数插入)、删为删除操作(使用deleteRow函数删除)、改为更新操作(使用updateRow函数更新)
+  
   # 重要操作原则 (必须遵守)
   -当<user>要求修改表格时，<user>的要求优先级最高。
   -每次回复都必须根据剧情在正确的位置进行增、删、改操作，禁止捏造信息和填入未知。
@@ -351,27 +352,27 @@ export const defaultSettings = await switchLanguage('__defaultSettings__', {
     tableStructure: [
         {
             tableName: "时空表格", tableIndex: 0, columns: ['日期', '时间', '地点（当前描写）', '此地角色'], enable: true, Required: true, asStatus: true, toChat: true, note: "记录时空信息的表格，应保持在一行",
-            initNode: '本轮需要记录当前时间、地点、人物信息，使用insertRow函数', updateNode: "当描写的场景，时间，人物变更时", deleteNode: "此表大于一行时应删除多余行",
+            initNode: '本轮需要记录当前时间、地点、人物信息，使用insertRow函数插入', updateNode: "当描写的场景，时间，人物变更时，使用updateRow函数更新", deleteNode: "此表大于一行时应删除多余行，使用deleteRow函数删除",
         },
         {
             tableName: '角色特征表格', tableIndex: 1, columns: ['角色名', '身体特征', '性格', '职业', '爱好', '喜欢的事物（作品、虚拟人物、物品等）', '住所', '其他重要信息'], enable: true, Required: true, asStatus: true, toChat: true, note: '角色天生或不易改变的特征csv表格，思考本轮有否有其它的角色，他应作出什么反应',
-            initNode: '本轮必须从上文寻找已知的所有角色使用insertRow插入，角色名不能为空', insertNode: '当本轮出现表中没有的新角色时，应插入', updateNode: "当角色的身体出现持久性变化时，例如伤痕/当角色有新的爱好，职业，喜欢的事物时/当角色更换住所时/当角色提到重要信息时", deleteNode: "",
+            initNode: '本轮必须从上文寻找已知的所有角色使用insertRow插入，角色名不能为空', insertNode: '当本轮出现表中没有的新角色时，应使用insertRow函数插入', updateNode: "当角色的身体出现持久性变化时，例如伤痕/当角色有新的爱好，职业，喜欢的事物时/当角色更换住所时/当角色服装、饰品发生改变时/当角色提到重要信息时，使用updateRow函数更新", deleteNode: "",
         },
         {
             tableName: '角色与<user>社交表格', tableIndex: 2, columns: ['角色名', '对<user>关系', '对<user>态度', '对<user>好感'], enable: true, Required: true, asStatus: true, toChat: true, note: '思考如果有角色和<user>互动，应什么态度',
-            initNode: '本轮必须从上文寻找已知的所有角色使用insertRow插入，角色名不能为空', insertNode: '当本轮出现表中没有的新角色时，应插入', updateNode: "当角色和<user>的交互不再符合原有的记录时/当角色和<user>的关系改变时", deleteNode: "",
+            initNode: '本轮必须从上文寻找已知的所有角色使用insertRow插入，角色名不能为空', insertNode: '当本轮出现表中没有的新角色时，应使用insertRow函数插入', updateNode: "当角色和<user>的交互不再符合原有的记录时/当角色和<user>的关系改变时", deleteNode: "",
         },
         {
             tableName: '任务、命令或者约定表格', tableIndex: 3, columns: ['角色', '任务', '地点', '持续时间'], enable: true, Required: false, asStatus: true, toChat: true, note: '思考本轮是否应该执行任务/赴约',
-            insertNode: '当特定时间约定一起去做某事时/某角色收到做某事的命令或任务时', updateNode: "", deleteNode: "当大家赴约时/任务或命令完成时/任务，命令或约定被取消时",
+            insertNode: '当特定时间约定一起去做某事时/某角色收到做某事的命令或任务时，使用insertRow函数插入', updateNode: "", deleteNode: "当大家赴约时/任务或命令完成时/任务，命令或约定被取消时，使用deleteRow函数删除",
         },
         {
             tableName: '重要事件历史表格', tableIndex: 4, columns: ['角色', '事件简述', '日期', '地点', '情绪'], enable: true, Required: true, asStatus: true, toChat: true, note: '记录<user>或角色经历的重要事件',
-            initNode: '本轮必须从上文寻找可以插入的事件并使用insertRow插入', insertNode: '当某个角色经历让自己印象深刻的事件时，比如表白、分手等', updateNode: "", deleteNode: "",
+            initNode: '本轮必须从上文寻找可以插入的事件并使用insertRow插入', insertNode: '当某个角色经历让自己印象深刻的事件时，比如表白、分手等，使用insertRow函数插入', updateNode: "", deleteNode: "",
         },
         {
             tableName: '重要物品表格', tableIndex: 5, columns: ['拥有人', '物品描述', '物品名', '数量', '重要原因'], enable: true, Required: false, asStatus: true, toChat: true, note: '角色现在拥有的物品',
-            insertNode: '角色现在新增加的物品', updateNode: "角色拥有的物品拥有者发生改变，数量、性质特征发生改变", deleteNode: "角色拥有的物品被使用完、数量为0、完全损坏掉、丢弃掉",
+            insertNode: '角色现在新增加的物品，使用insertRow函数插入', updateNode: "角色拥有的物品拥有者发生改变，数量、性质特征等发生改变，使用updateRow函数更新", deleteNode: "角色拥有的物品被使用完、数量为0、完全损坏掉、丢弃掉等，使用deleteRow函数删除",
         },
     ],
 });
